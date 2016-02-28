@@ -1,8 +1,14 @@
 # ref - a shell command log management tool
 
 ## Introdution
-* ref can keep the output logs of your commands
-* ref can get tokens from a log and execute a command refer to the tokens
+1.ref can reduce the suffering of switching mouse and keyboard in a series of shell command operation
+> ref can keep the output logs of your commands and get tokens from it then execute a command refer to the tokens.
+
+2.ref can save lengthy command and re-execute it easily
+> it is very helpful when you need to support various project with numerous build commands.
+
+3.ref is very simple to use and help you organize cluttered logs
+> you can get the history of executed commands and relevant logs simply.
 
 ## Compile and Install
 ```shell
