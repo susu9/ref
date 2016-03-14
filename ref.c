@@ -233,7 +233,10 @@ int get_offset(const char *ref_path, const int index)
         return -1;
     }
 
-    fread(&offset, sizeof(offset), 1, in);
+    if (fread(&offset, sizeof(offset), 1, in) <= 0) {
+        fclose(in);
+        return -1;
+    }
     fclose(in);
     //printf("get pos %d: %d\n", index, offset);
     return offset;
@@ -326,6 +329,8 @@ char *replace_cmd(struct ref *r, const char* a)
         }
         //printf("%d %d\n", row, col);
         tok = get_ref_tok(r, row, col);
+        if (!tok)
+            return NULL;
 
         rm_esc(tok);
         if (r->dir)
