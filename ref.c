@@ -1140,14 +1140,28 @@ int main (int argc, char **argv)
             update_head(&r);
     }
     else if (strcmp("-u", argv[1]) == 0 || strcmp("--update", argv[1]) == 0) {
+        int i;
+
         id = r.cur_id;
-        if (argc == 3) {
-            if (sscanf(argv[2], "ref%d", &id) != 1)
-                goto end;
-            if (!ref_is_exist(&r, id)) {
-                LOG_ERR("invalid \'ref%d\'", id);
-                goto end;
+        if (argc >= 3) {
+            for (i = 2; i < argc; i++) {
+                if (sscanf(argv[i], "ref%d", &id) != 1)
+                    goto end;
+                if (!ref_is_exist(&r, id)) {
+                    LOG_ERR("invalid \'ref%d\'", id);
+                    goto end;
+                }
+
+                r.flag |= (FLAG_TRACE | FLAG_UPDATE);
+                set_cur_head(&r, id);
+                r.cmd = get_cur_cmd(&r);
+                if (!r.cmd)
+                    goto end;
+                ret = launch(&r);
+                if (ret)
+                    goto end;
             }
+            goto end;
         }
         else if (r.cur_id == EMPTY_ID)
             goto end;
